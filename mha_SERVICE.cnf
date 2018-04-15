@@ -1,0 +1,71 @@
+#
+# 대상서비스: 서비스DB
+#
+# MasterHA 응용프로그램 구성 파일
+# 매개변수와 설정값 사이에는 공백을 두지 않는다.
+​
+################
+[server default]
+################
+​
+# MHA 매니저의 작업 디렉토리
+manager_workdir=/logs001/masterha/SERVICE
+# MHA 매니저의 로그 설정
+manager_log=/logs001/masterha/SERVICE/manager.log
+log_level=debug
+​
+# 각각의 노드에 접속할 DB 유저 (DB 헬스체크용)
+user=mhamgr
+password=***
+​
+# replication용 DB 유저
+repl_user=repl
+repl_password=***
+​
+# 각각의 노드에 접속할 ssh 유저
+ssh_user=mysql
+​
+# 노드가 살아 있는지 체크하기 주기(초)
+ping_interval=5
+​
+# 마스터노드의 binary log 디레토리
+master_binlog_dir=/logs001/mysql_logs/binary
+​
+# 각각의 노드의 작업 디렉토리
+remote_workdir= /logs001/masterha
+​
+# 커스텀스크립트
+master_ip_failover_script=/engn001/masterha/SERVICE/master_ip_failover
+master_ip_online_change_script=/engn001/masterha/SERVICE/master_ip_online_change
+​
+shutdown_script=/engn001/masterha/openstack_scripts/power_manager_nova
+# secondary_check_script=masterha_secondary_check -s remote_host1 -s remote_host2 # 마스터 서버 가용성을 확인하기 위해 호스트 정보를 여럿 둘 수 있다.
+# report_script=/engn001/masterha/SERVICE/scripts/send_report # 장애 조치가 완료되거나 오류로 작업이 끝난 결과를 보내기 위한 스크립트 (예: 메일보내기)
+​
+################
+# [serverN]
+# local-scope 매개 변수를 설정하는 영역
+# hostname은 필수 항목이다.
+################
+​
+[server_SERVICE01]
+# ip가 아닌 hostname 사용
+# 사용자 정의 스크립트 “power_manager”를 사용할 경우를 대비하기 위
+hostname=vm-SERVICEDB-p01
+# failover 시 slave 서버 장애를 무시하고 failover 진행하라는 의미이다.
+# 설정되지 않으면 failover 수행 시 모든 node에 대해 ssh를 통해 healtch check를 수행하며, 일부 서버에 대해 ssh로 접근이 안되는 경우 failover가 중지된다.
+ignore_fail=1
+# master 장애로 New Master 선정 시 우선순위
+candidate_master=1
+port=3306
+​
+[server_SERVICE02]
+# ip가 아닌 hostname 사용
+# # 사용자 정의 스크립트 “power_manager”를 사용할 경우를 대비하기 위
+hostname=vm-SERVICEDB-p02
+# failover 시 slave 서버 장애를 무시하고 failover 진행하라는 의미이다.
+# 설정되지 않으면 failover 수행 시 모든 node에 대해 ssh를 통해 healtch check를 수행하며, 일부 서버에 대해 ssh로 접근이 안되는 경우 failover가 중지된다.
+ignore_fail=1
+# master 장애로 New Master 선정 시 우선순위
+candidate_master=1
+port=3306

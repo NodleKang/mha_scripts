@@ -10,7 +10,7 @@ def get_nova_credentials_v2():
        d['username'] = 'openstack_dba'
        d['password'] = 'password'
        d['auth_url'] ='https://**.**.**.**:13000/v2.0'
-       d['project_id'] ='94c95a8ce5c945eb8340391f17f7f7e8'
+       d['project_id'] ='94c95a8fg5c945ea8340391f17f7f7e8'
        d['cacert'] ='/engn001/masterha/openstack_scripts/overcloud-cacert.pem'
        return d
 ​

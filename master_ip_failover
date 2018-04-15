@@ -1,3 +1,5 @@
+# define VIP UP/DOWN command 부분에 Master의 VIP를 입력한다.
+
 #!/usr/bin/env perl
 ​
 # Copyright (C) 2011 DeNA Co.,Ltd.
